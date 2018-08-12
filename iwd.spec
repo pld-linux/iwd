@@ -2,12 +2,12 @@
 Summary:	iwd - wireless daemon for Linux
 Summary(pl.UTF-8):	iwd - demon sieci bezprzewodowej dla Linuksa
 Name:		iwd
-Version:	0.1
+Version:	0.6
 Release:	1
 License:	LGPL v2.1+
 Group:		Networking/Daemons
 Source0:	https://www.kernel.org/pub/linux/network/wireless/%{name}-%{version}.tar.xz
-# Source0-md5:	5dba7b3d20d6b5367ba4e55a9eaf6f95
+# Source0-md5:	3ea486d242749b84b1f6aa05d1e3d81f
 URL:		https://git.kernel.org/pub/scm/network/wireless/iwd.git
 BuildRequires:	asciidoc
 BuildRequires:	dbus-devel
@@ -15,6 +15,8 @@ BuildRequires:	pkgconfig
 BuildRequires:	readline-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
+Requires(post,preun,postun):	systemd-units >= 38
+Requires:	systemd-units >= 38
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -36,7 +38,9 @@ Demon sieci bezprzewodowej dla Linuksa.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-#install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8}
+
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/iwd
+cp -p doc/main.conf $RPM_BUILD_ROOT%{_sysconfdir}/iwd/main.conf
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -44,12 +48,24 @@ rm -rf $RPM_BUILD_ROOT
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+%systemd_post iwd.service
+
+%preun
+%systemd_preun iwd.service
+
+%postun
+%systemd_reload
+
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO
+%dir %{_sysconfdir}/iwd
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/iwd/main.conf
 %attr(755,root,root) %{_bindir}/iwctl
 %attr(755,root,root) %{_bindir}/iwmon
 %attr(755,root,root) %{_libexecdir}/iwd
 %{systemdunitdir}/iwd.service
 %{_datadir}/dbus-1/system.d/iwd-dbus.conf
+%{_datadir}/dbus-1/system-services/net.connman.iwd.service
 %{_mandir}/man1/iwmon.1*
