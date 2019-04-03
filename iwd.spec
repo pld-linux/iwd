@@ -1,25 +1,26 @@
 Summary:	iwd - wireless daemon for Linux
 Summary(pl.UTF-8):	iwd - demon sieci bezprzewodowej dla Linuksa
 Name:		iwd
-Version:	0.14
+Version:	0.15
 Release:	1
 License:	LGPL v2.1+
 Group:		Networking/Daemons
 Source0:	https://www.kernel.org/pub/linux/network/wireless/%{name}-%{version}.tar.xz
-# Source0-md5:	0f776b000a03fe1e8ec04fa16445754e
+# Source0-md5:	b6dd248c8fdd756b9261fbf3d5081fcf
+Patch0:		pkcs8.conf.patch
 URL:		https://git.kernel.org/pub/scm/network/wireless/iwd.git
 BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel
-BuildRequires:	ell-devel >= 0.16
+BuildRequires:	ell-devel >= 0.18
 BuildRequires:	libtool >= 2:2.2
 BuildRequires:	pkgconfig
 BuildRequires:	readline-devel
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
-Requires:	ell >= 0.16
+Requires:	ell >= 0.18
 Requires:	systemd-units >= 38
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -31,6 +32,7 @@ Demon sieci bezprzewodowej dla Linuksa.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %{__libtoolize}
@@ -79,3 +81,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/system.d/iwd-dbus.conf
 %{_datadir}/dbus-1/system-services/net.connman.iwd.service
 %{_mandir}/man1/iwmon.1*
+/usr/lib/modules-load.d/pkcs8.conf

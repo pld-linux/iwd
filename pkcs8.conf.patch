@@ -1,0 +1,26 @@
+From 39ee15dbc3d7a03572cb7adc7dafd4860a0a3b47 Mon Sep 17 00:00:00 2001
+From: Marcel Holtmann <marcel@holtmann.org>
+Date: Wed, 23 Jan 2019 18:20:58 +0100
+Subject: build: Provide modules-load.d for loading pkcs8_key_parser module
+
+---
+ src/pkcs8.conf | 5 +++++
+ 1 file changed, 5 insertions(+)
+ create mode 100644 src/pkcs8.conf
+
+(limited to 'src/pkcs8.conf')
+
+diff --git a/src/pkcs8.conf b/src/pkcs8.conf
+new file mode 100644
+index 0000000..eae958e
+--- /dev/null
++++ b/src/pkcs8.conf
+@@ -0,0 +1,5 @@
++# When distributions use CONFIG_PKCS8_PRIVATE_KEY_PARSER=m kernel option,
++# using keyctl(2) will fail for loading PKCS#8 private keys since there is
++# no automatic module loading for key type parsers.  This entry ensures
++# that the kernel module pkcs8_key_parser.ko is loaded at boot time.
++pkcs8_key_parser
+-- 
+cgit 1.2-0.3.lf.el7
+
