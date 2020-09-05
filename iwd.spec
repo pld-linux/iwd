@@ -1,25 +1,27 @@
 Summary:	iwd - wireless daemon for Linux
 Summary(pl.UTF-8):	iwd - demon sieci bezprzewodowej dla Linuksa
 Name:		iwd
-Version:	1.8
+Version:	1.9
 Release:	1
 License:	LGPL v2.1+
 Group:		Networking/Daemons
 Source0:	https://www.kernel.org/pub/linux/network/wireless/%{name}-%{version}.tar.xz
-# Source0-md5:	4b003c53a8b66c7e0656de6bfe953fb2
+# Source0-md5:	220a1cd490fcacc069385d4b0c795295
 URL:		https://git.kernel.org/pub/scm/network/wireless/iwd.git
 BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel
-BuildRequires:	ell-devel >= 0.31
+BuildRequires:	docutils
+BuildRequires:	ell-devel >= 0.33
 BuildRequires:	libtool >= 2:2.2
 BuildRequires:	pkgconfig
 BuildRequires:	readline-devel
+BuildRequires:	rpmbuild(macros) >= 1.644
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
-Requires:	ell >= 0.31
+Requires:	ell >= 0.33
 Requires:	systemd-units >= 38
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -42,6 +44,8 @@ Demon sieci bezprzewodowej dla Linuksa.
 	--enable-docs \
 	--enable-external-ell \
 	--disable-silent-rules \
+	--with-systemd-modloaddir=/usr/lib/modules-load.d \
+	--with-systemd-networkdir=/lib/systemd/network \
 	--with-systemd-unitdir=%{systemdunitdir}
 
 %{__make} -j1
