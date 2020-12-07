@@ -1,19 +1,19 @@
 Summary:	iwd - wireless daemon for Linux
 Summary(pl.UTF-8):	iwd - demon sieci bezprzewodowej dla Linuksa
 Name:		iwd
-Version:	1.9
+Version:	1.10
 Release:	1
 License:	LGPL v2.1+
 Group:		Networking/Daemons
 Source0:	https://www.kernel.org/pub/linux/network/wireless/%{name}-%{version}.tar.xz
-# Source0-md5:	220a1cd490fcacc069385d4b0c795295
+# Source0-md5:	caf4c31f3c1a202b20ff81678614944d
 URL:		https://git.kernel.org/pub/scm/network/wireless/iwd.git
 BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel
 BuildRequires:	docutils
-BuildRequires:	ell-devel >= 0.33
+BuildRequires:	ell-devel >= 0.35
 BuildRequires:	libtool >= 2:2.2
 BuildRequires:	pkgconfig
 BuildRequires:	readline-devel
@@ -21,7 +21,7 @@ BuildRequires:	rpmbuild(macros) >= 1.644
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires(post,preun,postun):	systemd-units >= 38
-Requires:	ell >= 0.33
+Requires:	ell >= 0.35
 Requires:	systemd-units >= 38
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -83,6 +83,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/dbus-1/system-services/net.connman.iwd.service
 %{_mandir}/man1/iwctl.1*
 %{_mandir}/man1/iwmon.1*
+%{_mandir}/man5/iwd.ap.5*
 %{_mandir}/man5/iwd.config.5*
 %{_mandir}/man5/iwd.network.5*
 %{_mandir}/man7/iwd.debug.7*
