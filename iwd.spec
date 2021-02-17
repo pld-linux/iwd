@@ -8,7 +8,6 @@ Group:		Networking/Daemons
 Source0:	https://www.kernel.org/pub/linux/network/wireless/%{name}-%{version}.tar.xz
 # Source0-md5:	2e511111d0c9aa28957d36c4fd737418
 URL:		https://git.kernel.org/pub/scm/network/wireless/iwd.git
-BuildRequires:	asciidoc
 BuildRequires:	autoconf >= 2.60
 BuildRequires:	automake
 BuildRequires:	dbus-devel
@@ -41,8 +40,8 @@ Demon sieci bezprzewodowej dla Linuksa.
 %{__autoheader}
 %{__automake}
 %configure \
-	--enable-docs \
 	--enable-external-ell \
+	--enable-manual-pages \
 	--disable-silent-rules \
 	--with-systemd-modloaddir=/usr/lib/modules-load.d \
 	--with-systemd-networkdir=/lib/systemd/network \
