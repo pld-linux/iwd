@@ -47,7 +47,7 @@ Demon sieci bezprzewodowej dla Linuksa.
 	--with-systemd-networkdir=/lib/systemd/network \
 	--with-systemd-unitdir=%{systemdunitdir}
 
-%{__make} -j1
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
