@@ -1,0 +1,66 @@
+From: James Prestwood <prestwoj@gmail.com>
+To: iwd@lists.01.org
+Cc: James Prestwood <prestwoj@gmail.com>
+Subject: [PATCH] handshake: use _hs directly in handshake_event
+Date: Wed, 26 Jan 2022 09:41:00 -0800
+Message-Id: <20220126174100.3162606-1-prestwoj@gmail.com>
+X-Mailer: git-send-email 2.31.1
+MIME-Version: 1.0
+Message-ID-Hash: NMNRINAVG2TIZ5OC2HCAUVNIA43MR46D
+X-Message-ID-Hash: NMNRINAVG2TIZ5OC2HCAUVNIA43MR46D
+X-MailFrom: prestwoj@gmail.com
+X-Mailman-Rule-Misses: dmarc-mitigation; no-senders; approved; emergency; loop; banned-address; member-moderation; nonmember-moderation; administrivia; implicit-dest; max-recipients; max-size; news-moderation; no-subject; suspicious-header
+X-Mailman-Version: 3.1.1
+Precedence: list
+List-Id: <iwd.lists.01.org>
+Archived-At: <https://lists.01.org/hyperkitty/list/iwd@lists.01.org/message/NMNRINAVG2TIZ5OC2HCAUVNIA43MR46D/>
+List-Archive: <https://lists.01.org/hyperkitty/list/iwd@lists.01.org/>
+List-Help: <mailto:iwd-request@lists.01.org?subject=help>
+List-Post: <mailto:iwd@lists.01.org>
+List-Subscribe: <mailto:iwd-join@lists.01.org>
+List-Unsubscribe: <mailto:iwd-leave@lists.01.org>
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-TUID: mq6DYmslPL7v
+Content-Length: 1343
+
+Certain platforms/compilers were having issues with using the 'hs'
+local in this macro (likely has something to do with the caller
+also using a local 'hs' variable name). This caused a crash on these
+platforms. Using the macro argument _hs directly fixes the crash.
+---
+ src/handshake.h | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/src/handshake.h b/src/handshake.h
+index 34d4829d..7136087a 100644
+--- a/src/handshake.h
++++ b/src/handshake.h
+@@ -166,19 +166,18 @@ struct handshake_state {
+ 
+ #define handshake_event(_hs, event, ...)	\
+ 	(__extension__ ({	\
+-		struct handshake_state *hs = (_hs);	\
+ 		bool freed = false;	\
+ 	\
+-		if (hs->event_func && !hs->in_event) {	\
+-			hs->in_event = true;	\
+-			hs->event_func(hs, event, hs->user_data,	\
++		if ((_hs)->event_func && !(_hs)->in_event) {	\
++			(_hs)->in_event = true;	\
++			(_hs)->event_func((_hs), event, (_hs)->user_data,	\
+ 					##__VA_ARGS__); \
+ 	\
+-			if (!hs->in_event) {	\
+-				handshake_state_free(hs);	\
++			if (!(_hs)->in_event) {	\
++				handshake_state_free((_hs));	\
+ 				freed = true;	\
+ 			} else	\
+-				hs->in_event = false;	\
++				(_hs)->in_event = false;	\
+ 		}	\
+ 		freed;	\
+ 	}))
+-- 
+2.31.1
