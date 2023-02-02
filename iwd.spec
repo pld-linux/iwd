@@ -1,13 +1,12 @@
 Summary:	iwd - wireless daemon for Linux
 Summary(pl.UTF-8):	iwd - demon sieci bezprzewodowej dla Linuksa
 Name:		iwd
-Version:	2.2
-Release:	2
+Version:	2.3
+Release:	1
 License:	LGPL v2.1+
 Group:		Networking/Daemons
 Source0:	https://www.kernel.org/pub/linux/network/wireless/%{name}-%{version}.tar.xz
-# Source0-md5:	2dbe822e77efa0f4a98435eb51e0236f
-Patch0:		buf-overflow.patch
+# Source0-md5:	8faf7a552ba4cb4747567409e14887ac
 URL:		https://git.kernel.org/pub/scm/network/wireless/iwd.git
 BuildRequires:	autoconf >= 2.69
 BuildRequires:	automake
@@ -33,7 +32,6 @@ Demon sieci bezprzewodowej dla Linuksa.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %{__libtoolize}
